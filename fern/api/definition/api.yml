@@ -1,4 +1,5 @@
 name: api
+display-name: Hathora Cloud API
 auth: bearer
 error-discrimination:
   strategy: status-code

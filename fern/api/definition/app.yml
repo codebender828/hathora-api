@@ -18,14 +18,17 @@ services:
         appName: commons.AppName
       endpoints:
         get:
+          display-name: Get app response
           method: GET  # TODO verify method
           path: /
           response: GetAppResponse
         logs:
+          display-name: Get app logs
           method: GET  # TODO verify method
           path: /logs
           response: string
         delete:
+          display-name: Delete app
           method: DELETE  # TODO verify method
           path: /delete
           request:

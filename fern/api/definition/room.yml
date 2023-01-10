@@ -3,6 +3,48 @@
 imports:
   commons: commons.yml
 
+services:
+  http:
+    RoomsService:
+      auth: true
+      base-path: /rooms
+      endpoints:
+        create:
+          display-name: Create room
+          method: POST  # TODO verify method
+          path: /create/{appId}
+          path-parameters:
+            appId: commons.AppId
+          request: 
+            name: CreateRoomRequest
+            query-parameters:
+              region: commons.Region
+          response: CreateRoomResponse
+        connect:
+          display-name: Connect room 
+          method: POST  # TODO verify method
+          path: /connect/{appId}/{roomId}
+          path-parameters:
+            appId: commons.AppId
+            roomId: commons.RoomId
+          response: ConnectToRoomResponse
+        suspend:
+          display-name: Suspend room
+          method: DELETE  # TODO verify method
+          path: /suspense/{appId}/{roomId}
+          path-parameters:
+            appId: commons.AppId
+            roomId: commons.RoomId
+          response: SuspendRoomResponse
+        destroy:
+          display-name: Delete room
+          method: DELETE  # TODO verify method
+          path: /destory/{appId}/{roomId}
+          path-parameters:
+            appId: commons.AppId
+            roomId: commons.RoomId
+          response: DestroyRoomResponse
+
 types:
   CreateRoomResponse:
     properties:
@@ -22,41 +64,3 @@ types:
   DestroyRoomResponse:
     properties:
       destroyed: boolean
-
-services:
-  http:
-    RoomsService:
-      auth: true
-      base-path: /rooms
-      endpoints:
-        create:
-          method: POST  # TODO verify method
-          path: /create/{appId}
-          path-parameters:
-            appId: commons.AppId
-          request: 
-            name: CreateRoomRequest
-            query-parameters:
-              region: commons.Region
-          response: CreateRoomResponse
-        connect:
-          method: POST  # TODO verify method
-          path: /connect/{appId}/{roomId}
-          path-parameters:
-            appId: commons.AppId
-            roomId: commons.RoomId
-          response: ConnectToRoomResponse
-        suspend:
-          method: DELETE  # TODO verify method
-          path: /suspense/{appId}/{roomId}
-          path-parameters:
-            appId: commons.AppId
-            roomId: commons.RoomId
-          response: SuspendRoomResponse
-        destroy:
-          method: DELETE  # TODO verify method
-          path: /destory/{appId}/{roomId}
-          path-parameters:
-            appId: commons.AppId
-            roomId: commons.RoomId
-          response: DestroyRoomResponse
