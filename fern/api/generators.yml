@@ -17,5 +17,5 @@ groups:
         version: 0.0.32
         output:
           location: postman
-          api-key: ${POSTMAN_API_KEY}
-          workspace-id: ${POSTMAN_WORKSPACE_ID}
+          api-key: ${FERN_POSTMAN_API_KEY}
+          workspace-id: ${FERN_POSTMAN_WORKSPACE_ID}
