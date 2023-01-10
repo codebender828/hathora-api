@@ -1,4 +1,39 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
 types:
-  id: string
+  AppId: string
+  AppName: string
+  RoomId: string
+  Region: string
+  DeploymentId: string
+
+  Deployment:
+    properties:
+      appId: AppId
+      deploymentId: DeploymentId
+      regionalContainerTags: list<RegionalContainerTags>
+      containerPort: integer
+      transportType: TransportType
+      roomsPerProcess: integer
+      requestedCPU: integer
+      requestedMemoryMB: integer
+      deployedBy: string
+      deployStartedAt: datetime
+      deployFinishedAt: optional<datetime>
+      status: DeploymentStatus
+    
+  RegionalContainerTags:
+    properties:
+      region: Region
+      containerTag: string
+  
+  TransportType:
+    enum:
+      - tcp
+      - udp
+  
+  DeploymentStatus:
+    enum:
+      - running
+      - completed
+      - failed

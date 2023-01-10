@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+imports:
+  commons: commons.yml
+
+types:
+  GetAppResponse:
+    extends: commons.Deployment
+    properties:
+      secret: string
+
+services:
+  http:
+    AppsService:
+      auth: true
+      base-path: /app/{appName}
+      path-parameters:
+        appName: commons.AppName
+      endpoints:
+        get:
+          method: GET  # TODO verify method
+          path: /
+          response: GetAppResponse
+        logs:
+          method: GET  # TODO verify method
+          path: /logs
+          response: string
+        delete:
+          method: DELETE  # TODO verify method
+          path: /delete
+          request:
+            name: GetAppRequest
+            query-parameters:
+              forceDestroy: optional<boolean>
+          response: string

@@ -1,23 +1,24 @@
-# {Company} API
+# Hathora API
 
 Tagging a release on this repository will update the:
 
-- [Node.js SDK repo](https://github.com/fern-{company}/{company}-node)
-- [OpenAPI description repo](https://github.com/fern-{company}/{company}-openapi)
+- [Node.js SDK repo](https://github.com/fern-hathora/hathora-node)
+- [OpenAPI spec repo](https://github.com/fern-hathora/hathora-openapi)
+- [Postman description repo](https://github.com/fern-hathora/hathora-postman)
 - _More SDKs to come..._
 
 ## What is in this repository?
 
 This repository contains
 
-- {Company}'s Fern API Definition which lives in the [definition](./fern/api/definition/) folder
+- Hathora's Fern API Definition which lives in the [definition](./fern/api/definition/) folder
 - Generators (see [generators.yml](./fern/api/generators.yml))
 
 ## What is in the API Definition?
 
-The API Definition contains information about what endpoints, types, and errors are used in the API. The definition is broken into smaller files such as [{TODO}.yml](fern/api/definition/{TODO}.yml) and [{TODO}.yml](fern/api/definition/{TODO}.yml).
+The API Definition contains information about what endpoints, types, and errors are used in the API. The definition is broken into smaller files such as [room.yml](fern/api/definition/room.yml) and [app.yml](fern/api/definition/app.yml).
 
-In order to make sure that the definition is valid, you can use the Fern CLI.
+To make sure that the definition is valid, you can use the Fern CLI.
 
 ```bash
 npm install -g fern-api # Installs CLI
