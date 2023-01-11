@@ -10,7 +10,7 @@ services:
       base-path: /rooms
       endpoints:
         create:
-          display-name: Create room
+          display-name: Create Room
           method: POST  # TODO verify method
           path: /create/{appId}
           path-parameters:
@@ -18,32 +18,64 @@ services:
           request: 
             name: CreateRoomRequest
             query-parameters:
-              region: commons.Region
+              region: commons.Region # TODO is this required?
           response: CreateRoomResponse
+          examples:
+            - path-parameters:
+                appId: $commons.AppId.Example
+              query-parameters:
+                region: us-east-1
+              response:
+                body:
+                  roomId: $commons.RoomId.Example
+                  host: https://www.your-host.com
+                  port: 435
         connect:
-          display-name: Connect room 
+          display-name: Connect Room 
           method: POST  # TODO verify method
           path: /connect/{appId}/{roomId}
           path-parameters:
             appId: commons.AppId
             roomId: commons.RoomId
           response: ConnectToRoomResponse
+          examples:
+            - path-parameters:
+                appId: $commons.AppId.Example
+                roomId: $commons.RoomId.Example
+              response:
+                body:
+                  host: https://www.your-host.com
+                  port: 435
         suspend:
-          display-name: Suspend room
+          display-name: Suspend Room
           method: DELETE  # TODO verify method
           path: /suspense/{appId}/{roomId}
           path-parameters:
             appId: commons.AppId
             roomId: commons.RoomId
           response: SuspendRoomResponse
+          examples:
+            - path-parameters:
+                appId: $commons.AppId.Example
+                roomId: $commons.RoomId.Example
+              response:
+                body:
+                  suspended: true
         destroy:
-          display-name: Delete room
+          display-name: Destroy Room
           method: DELETE  # TODO verify method
           path: /destory/{appId}/{roomId}
           path-parameters:
             appId: commons.AppId
             roomId: commons.RoomId
           response: DestroyRoomResponse
+          examples:
+            - path-parameters:
+                appId: $commons.AppId.Example
+                roomId: $commons.RoomId.Example
+              response:
+                body:
+                  destroyed: true
 
 types:
   CreateRoomResponse:
