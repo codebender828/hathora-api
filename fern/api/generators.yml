@@ -19,3 +19,5 @@ groups:
           location: postman
           api-key: ${FERN_POSTMAN_API_KEY}
           workspace-id: ${FERN_POSTMAN_WORKSPACE_ID}
+        github:
+          repository: fern-hathora/hathora-postman
