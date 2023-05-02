@@ -9,14 +9,10 @@ Tagging a release on this repository will update the:
 
 This repository contains
 
-- Hathora's Fern API Definition which lives in the [definition](./fern/api/definition/) folder
+- Hathora's OpenAPI Definition which lives in the [openapi](./fern/api/openapi/) folder
 - Generators (see [generators.yml](./fern/api/generators.yml))
 
-## What is in the API Definition?
-
-The API Definition contains information about what endpoints, types, and errors are used in the API. The definition is broken into smaller files such as [room.yml](fern/api/definition/room.yml) and [app.yml](fern/api/definition/app.yml).
-
-To make sure that the definition is valid, you can use the Fern CLI.
+To make sure that the OpenAPI is valid, you can use the Fern CLI.
 
 ```bash
 npm install -g fern-api # Installs CLI
