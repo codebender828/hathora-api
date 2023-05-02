@@ -2,7 +2,7 @@ groups:
   external:
     generators:
       - name: fernapi/fern-typescript-sdk
-        version: 0.5.18-rc0
+        version: 0.5.18-rc1
         output:
           location: npm
           package-name: "@fern-api/hathora"
