@@ -3,8 +3,6 @@
 Tagging a release on this repository will update the:
 
 - [Node.js SDK repo](https://github.com/fern-hathora/hathora-node)
-- [OpenAPI Spec repo](https://github.com/fern-hathora/hathora-openapi)
-- [Postman Collection repo](https://github.com/fern-hathora/hathora-postman)
 - _More SDKs to come..._
 
 ## What is in this repository?
