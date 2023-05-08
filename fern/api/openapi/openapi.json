@@ -1830,14 +1830,7 @@
 							"$ref": "#/components/schemas/AppId"
 						}
 					},
-					{
-						"in": "header",
-						"name": "Authorization",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
+					
 					{
 						"in": "query",
 						"name": "region",
@@ -1937,14 +1930,7 @@
 							"$ref": "#/components/schemas/AppId"
 						}
 					},
-					{
-						"in": "header",
-						"name": "Authorization",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
+					
 					{
 						"in": "query",
 						"name": "region",
@@ -2017,14 +2003,7 @@
 							"$ref": "#/components/schemas/AppId"
 						}
 					},
-					{
-						"in": "header",
-						"name": "Authorization",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
+					
 					{
 						"in": "query",
 						"name": "local",
@@ -2124,14 +2103,7 @@
 							"$ref": "#/components/schemas/AppId"
 						}
 					},
-					{
-						"in": "header",
-						"name": "Authorization",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
+					
 					{
 						"in": "query",
 						"name": "roomId",
@@ -2245,14 +2217,7 @@
 							"$ref": "#/components/schemas/AppId"
 						}
 					},
-					{
-						"in": "header",
-						"name": "Authorization",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
+					
 					{
 						"in": "query",
 						"name": "roomId",
@@ -2366,14 +2331,7 @@
 							"$ref": "#/components/schemas/AppId"
 						}
 					},
-					{
-						"in": "header",
-						"name": "Authorization",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
+					
 					{
 						"in": "query",
 						"name": "roomId",
@@ -2486,14 +2444,7 @@
 							"$ref": "#/components/schemas/AppId"
 						}
 					},
-					{
-						"in": "header",
-						"name": "Authorization",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
+					
 					{
 						"in": "query",
 						"name": "roomId",
