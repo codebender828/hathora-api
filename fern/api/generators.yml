@@ -1,5 +1,7 @@
 groups:
   external:
+    docs:
+      domain: hathora
     generators:
       - name: fernapi/fern-typescript-sdk
         version: 0.5.23

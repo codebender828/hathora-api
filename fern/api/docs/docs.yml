@@ -1,0 +1,6 @@
+navigation:
+  - api: API Reference
+colors:
+  accentPrimary: "#75f96f"
+
+logo: ./logo.png
