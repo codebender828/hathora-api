@@ -4568,7 +4568,8 @@
 	},
 	"servers": [
 		{
-			"url": "https://api.hathora.dev"
+			"url": "https://api.hathora.dev",
+			"x-fern-server-name": "Production"
 		},
 		{
 			"url": "/"
