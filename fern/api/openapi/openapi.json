@@ -8,12 +8,14 @@
 		"schemas": {
 			"AppName": {
 				"type": "string",
+				"example": "minecraft",
 				"description": "Readable name for an application.",
 				"maxLength": 32,
 				"pattern": "^[a-z0-9-]+$"
 			},
 			"AppId": {
 				"type": "string",
+				"example": "app-af469a92-5b45-4565-b3c4-b79878de67d2",
 				"description": "System generated unique identifier for an application."
 			},
 			"Record_string.never_": {
@@ -23,14 +25,23 @@
 			},
 			"OrgId": {
 				"type": "string",
+				"example": "google-oauth2|107030234048588177467",
 				"description": "System generated unique identifier for an organization."
+			},
+			"EmailAddress": {
+				"type": "string",
+				"example": "dev@hathora.dev",
+				"description": "Email Address."
 			},
 			"Application": {
 				"properties": {
 					"deletedBy": {
-						"type": "string",
-						"nullable": true,
-						"description": "Email address."
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/EmailAddress"
+							}
+						],
+						"nullable": true
 					},
 					"deletedAt": {
 						"type": "string",
@@ -42,8 +53,7 @@
 						"format": "date-time"
 					},
 					"createdBy": {
-						"type": "string",
-						"description": "Email address."
+						"$ref": "#/components/schemas/EmailAddress"
 					},
 					"orgId": {
 						"$ref": "#/components/schemas/OrgId"
@@ -71,7 +81,8 @@
 					},
 					"appSecret": {
 						"type": "string",
-						"description": "Secret that is used for identiy and access management."
+						"description": "Secret that is used for identiy and access management.",
+						"example": "secret-6f706e83-0ec1-437a-9a46-7d4281eb2f39"
 					},
 					"appId": {
 						"$ref": "#/components/schemas/AppId"
@@ -97,11 +108,13 @@
 			"BuildId": {
 				"type": "number",
 				"format": "double",
+				"example": 1,
 				"description": "System generated id for a build. Increments by 1."
 			},
 			"DeploymentId": {
 				"type": "number",
 				"format": "double",
+				"example": 1,
 				"description": "System generated id for a completed deployment. Increments by 1."
 			},
 			"TransportType": {
@@ -117,12 +130,14 @@
 					"port": {
 						"type": "integer",
 						"format": "int32",
+						"example": 8000,
 						"minimum": 1,
 						"maximum": 65535
 					},
 					"name": {
 						"type": "string",
 						"description": "Readable name for the port.",
+						"example": "default",
 						"minLength": 1,
 						"maxLength": 100,
 						"pattern": "^[a-z][a-z0-9-]*$"
@@ -135,11 +150,13 @@
 			"PlanName": {
 				"type": "string",
 				"enum": ["tiny", "small", "medium", "large"],
+				"example": "tiny",
 				"description": "A plan defines how much CPU and memory is required to run an instance of your game server.\n\n`tiny`: shared core, 1gb memory\n\n`small`: 1 core, 2gb memory\n\n`medium`: 2 core, 4gb memory\n\n`large`: 4 core, 8gb memory"
 			},
 			"NumRoomsPerProcess": {
 				"type": "integer",
 				"format": "int32",
+				"example": 3,
 				"description": "Governs how many [rooms](https://hathora.dev/docs/concepts/hathora-entities#room) can be scheduled in a process.",
 				"minimum": 1,
 				"maxLength": 10000
@@ -150,10 +167,16 @@
 						"items": {
 							"properties": {
 								"value": {
-									"type": "string"
+									"type": "string",
+									"example": "TRUE",
+									"maxLength": 5000
 								},
 								"name": {
-									"type": "string"
+									"type": "string",
+									"example": "EULA",
+									"minLength": 1,
+									"maxLength": 100,
+									"pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
 								}
 							},
 							"required": ["value", "name"],
@@ -173,6 +196,11 @@
 						},
 						"type": "array",
 						"description": "Additional ports your server listens on.",
+						"example": {
+							"transportType": "tcp",
+							"port": 4000,
+							"name": "debug"
+						},
 						"maxItems": 2
 					},
 					"defaultContainerPort": {
@@ -192,16 +220,19 @@
 						"format": "date-time"
 					},
 					"createdBy": {
-						"type": "string",
-						"description": "Email address."
+						"$ref": "#/components/schemas/EmailAddress"
 					},
 					"requestedMemoryMB": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "The amount of memory allocated to the container.",
+						"example": 1024
 					},
 					"requestedCPU": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "The number of cores allocated to the container.",
+						"example": 0.5
 					},
 					"deploymentId": {
 						"$ref": "#/components/schemas/DeploymentId"
@@ -344,7 +375,7 @@
 			"LinkPaymentMethod": {
 				"properties": {
 					"email": {
-						"type": "string"
+						"$ref": "#/components/schemas/EmailAddress"
 					}
 				},
 				"type": "object"
@@ -366,6 +397,15 @@
 			},
 			"PaymentMethod": {
 				"$ref": "#/components/schemas/Partial__card-CardPaymentMethod--ach-AchPaymentMethod--link-LinkPaymentMethod--__"
+			},
+			"CustomerPortalUrl": {
+				"properties": {
+					"returnUrl": {
+						"type": "string"
+					}
+				},
+				"required": ["returnUrl"],
+				"type": "object"
 			},
 			"Invoice": {
 				"properties": {
@@ -471,8 +511,7 @@
 						"format": "date-time"
 					},
 					"createdBy": {
-						"type": "string",
-						"description": "Email address."
+						"$ref": "#/components/schemas/EmailAddress"
 					},
 					"buildId": {
 						"$ref": "#/components/schemas/BuildId"
@@ -503,10 +542,12 @@
 							"properties": {
 								"value": {
 									"type": "string",
+									"example": "TRUE",
 									"maxLength": 5000
 								},
 								"name": {
 									"type": "string",
+									"example": "EULA",
 									"minLength": 1,
 									"maxLength": 100,
 									"pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
@@ -539,6 +580,7 @@
 						"type": "integer",
 						"format": "int32",
 						"description": "Default port the server listens on.",
+						"example": 4000,
 						"minimum": 1,
 						"maximum": 65535
 					}
@@ -574,6 +616,7 @@
 			},
 			"RoomId": {
 				"type": "string",
+				"example": "2swovpy1fnunu",
 				"description": "Unique identifier to a game session or match. Use either a system generated ID or pass in your own.",
 				"minLength": 1,
 				"maxLength": 100,
@@ -603,8 +646,7 @@
 						"format": "date-time"
 					},
 					"createdBy": {
-						"type": "string",
-						"description": "Email address."
+						"$ref": "#/components/schemas/EmailAddress"
 					},
 					"local": {
 						"type": "boolean"
@@ -654,7 +696,8 @@
 				"properties": {
 					"state": {
 						"additionalProperties": false,
-						"type": "object"
+						"type": "object",
+						"description": "JSON blob to store metadata for a room. Must be smaller than 1MB."
 					}
 				},
 				"required": ["state"],
@@ -675,7 +718,28 @@
 			},
 			"ProcessId": {
 				"type": "string",
+				"example": "cbfcddd2-0006-43ae-996c-995fff7bed2e",
 				"description": "System generated unique identifier to a runtime instance of your game server."
+			},
+			"VerificationEmailResponse": {
+				"properties": {
+					"status": {
+						"type": "string",
+						"enum": ["success"],
+						"nullable": false
+					}
+				},
+				"required": ["status"],
+				"type": "object"
+			},
+			"VerificationEmailRequest": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					}
+				},
+				"required": ["userId"],
+				"type": "object"
 			},
 			"MetricValue": {
 				"properties": {
@@ -753,6 +817,12 @@
 				},
 				"required": ["transportType", "port", "host", "name"],
 				"type": "object",
+				"example": {
+					"host": "1.proxy.hathora.dev",
+					"name": "default",
+					"port": 34567,
+					"transportType": "tcp"
+				},
 				"description": "Connection information to an exposed port on an active process."
 			},
 			"Process": {
@@ -760,22 +830,34 @@
 					"egressedBytes": {
 						"type": "number",
 						"format": "double",
-						"description": "Measures network traffic leaving the process in GB."
+						"description": "Measures network traffic leaving the process in bytes.",
+						"example": 435
 					},
 					"idleSince": {
 						"type": "string",
 						"format": "date-time",
-						"nullable": true
+						"nullable": true,
+						"deprecated": true
+					},
+					"activeConnectionsUpdatedAt": {
+						"type": "string",
+						"format": "date-time"
 					},
 					"activeConnections": {
 						"type": "number",
 						"format": "double",
-						"description": "Tracks the number of active connections to a process."
+						"description": "Tracks the number of active connections to a process.",
+						"example": 10
+					},
+					"roomSlotsAvailableUpdatedAt": {
+						"type": "string",
+						"format": "date-time"
 					},
 					"roomSlotsAvailable": {
 						"type": "number",
 						"format": "double",
-						"description": "Tracks the number of room slots available on the process."
+						"description": "Tracks the number of room slots available on the process.",
+						"example": 1
 					},
 					"draining": {
 						"type": "boolean",
@@ -807,7 +889,16 @@
 						"items": {
 							"$ref": "#/components/schemas/ExposedPort"
 						},
-						"type": "array"
+						"type": "array",
+						"example": [
+							{
+								"host": "1.proxy.hathora.dev",
+								"name": "debug",
+								"port": 72941,
+								"transportType": "tcp"
+							}
+						],
+						"maxItems": 2
 					},
 					"exposedPort": {
 						"$ref": "#/components/schemas/ExposedPort"
@@ -837,7 +928,9 @@
 				"required": [
 					"egressedBytes",
 					"idleSince",
+					"activeConnectionsUpdatedAt",
 					"activeConnections",
+					"roomSlotsAvailableUpdatedAt",
 					"roomSlotsAvailable",
 					"draining",
 					"terminatedAt",
@@ -859,10 +952,12 @@
 			"RoomStatus": {
 				"type": "string",
 				"enum": ["scheduling", "active", "suspended", "destroyed"],
+				"example": "active",
 				"description": "The allocation status of a room.\n\n`scheduling`: a process is not allocated yet and the room is waiting to be scheduled\n\n`active`: ready to accept connections\n\n`suspended`: room is unallocated from the process but can be rescheduled later with the same `roomId`\n\n`destroyed`: all associated metadata is deleted"
 			},
 			"RoomAllocationId": {
 				"type": "string",
+				"example": "e3a0aa32-1711-4036-acfa-008b96061a78",
 				"description": "System generated unique identifier to an allocated instance of a room."
 			},
 			"RoomAllocation": {
@@ -1046,7 +1141,16 @@
 						"items": {
 							"$ref": "#/components/schemas/ExposedPort"
 						},
-						"type": "array"
+						"type": "array",
+						"example": [
+							{
+								"host": "1.proxy.hathora.dev",
+								"name": "debug",
+								"port": 72941,
+								"transportType": "tcp"
+							}
+						],
+						"maxItems": 2
 					},
 					"exposedPort": {
 						"$ref": "#/components/schemas/ExposedPort"
@@ -1580,13 +1684,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"properties": {
-									"returnUrl": {
-										"type": "string"
-									}
-								},
-								"required": ["returnUrl"],
-								"type": "object"
+								"$ref": "#/components/schemas/CustomerPortalUrl"
 							}
 						}
 					}
@@ -1744,16 +1842,6 @@
 						}
 					},
 					"404": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					},
-					"422": {
 						"description": "",
 						"content": {
 							"application/json": {
@@ -3063,7 +3151,7 @@
 						}
 					}
 				},
-				"description": "Get details for an existing [lobby](https://hathora.dev/docs/concepts/hathora-entities#lobby) using `appId` and `roomId`. State must be smaller than 1MB.",
+				"description": "Set the state of a [lobby](https://hathora.dev/docs/concepts/hathora-entities#lobby) using `appId` and `roomId`. State is intended to be set by the server and must be smaller than 1MB.",
 				"tags": ["LobbyV2"],
 				"security": [
 					{
@@ -3305,6 +3393,46 @@
 						}
 					}
 				]
+			}
+		},
+		"/management/v1/sendverificationemail": {
+			"post": {
+				"operationId": "SendVerificationEmail",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VerificationEmailResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": ["ManagementV1"],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/VerificationEmailRequest"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/metrics/v1/{appId}/process/{processId}": {
@@ -3596,6 +3724,16 @@
 							}
 						}
 					},
+					"403": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
 					"404": {
 						"description": "",
 						"content": {
@@ -3651,8 +3789,7 @@
 							}
 						}
 					}
-				},
-				"x-fern-request-name": "CreateRoomRequestV1"
+				}
 			}
 		},
 		"/rooms/v1/{appId}/info/{roomId}": {
@@ -4019,6 +4156,16 @@
 							}
 						}
 					},
+					"403": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
 					"404": {
 						"description": "",
 						"content": {
@@ -4075,7 +4222,7 @@
 						}
 					}
 				},
-				"x-fern-request-name": "CreateRoomRequestV2"
+				"x-fern-request-name": "CreateRoomRequestWrapper"
 			}
 		},
 		"/rooms/v2/{appId}/info/{roomId}": {
