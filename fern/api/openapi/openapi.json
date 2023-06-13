@@ -9,7 +9,7 @@
 			"AppName": {
 				"type": "string",
 				"example": "minecraft",
-				"description": "Readable name for an application.",
+				"description": "Readable name for an application. Must be unique within an organization.",
 				"maxLength": 32,
 				"pattern": "^[a-z0-9-]+$"
 			},
@@ -28,32 +28,29 @@
 				"example": "google-oauth2|107030234048588177467",
 				"description": "System generated unique identifier for an organization."
 			},
-			"EmailAddress": {
-				"type": "string",
-				"example": "dev@hathora.dev",
-				"description": "Email Address."
-			},
 			"Application": {
 				"properties": {
 					"deletedBy": {
-						"allOf": [
-							{
-								"$ref": "#/components/schemas/EmailAddress"
-							}
-						],
-						"nullable": true
+						"type": "string",
+						"nullable": true,
+						"description": "Email address for the user that deleted the application.",
+						"example": "dev@hathora.dev"
 					},
 					"deletedAt": {
 						"type": "string",
 						"format": "date-time",
-						"nullable": true
+						"nullable": true,
+						"description": "When the application was deleted."
 					},
 					"createdAt": {
 						"type": "string",
-						"format": "date-time"
+						"format": "date-time",
+						"description": "When the application was created."
 					},
 					"createdBy": {
-						"$ref": "#/components/schemas/EmailAddress"
+						"type": "string",
+						"description": "Email address for the user that deleted the application.",
+						"example": "dev@hathora.dev"
 					},
 					"orgId": {
 						"$ref": "#/components/schemas/OrgId"
@@ -81,7 +78,7 @@
 					},
 					"appSecret": {
 						"type": "string",
-						"description": "Secret that is used for identiy and access management.",
+						"description": "Secret that is used for identity and access management.",
 						"example": "secret-6f706e83-0ec1-437a-9a46-7d4281eb2f39"
 					},
 					"appId": {
@@ -105,17 +102,11 @@
 				"type": "object",
 				"description": "An application object is the top level namespace for the game server."
 			},
-			"BuildId": {
-				"type": "number",
-				"format": "double",
-				"example": 1,
-				"description": "System generated id for a build. Increments by 1."
-			},
 			"DeploymentId": {
-				"type": "number",
-				"format": "double",
+				"type": "integer",
+				"format": "int32",
 				"example": 1,
-				"description": "System generated id for a completed deployment. Increments by 1."
+				"description": "System generated id for a deployment. Increments by 1."
 			},
 			"TransportType": {
 				"type": "string",
@@ -182,7 +173,9 @@
 							"required": ["value", "name"],
 							"type": "object"
 						},
-						"type": "array"
+						"type": "array",
+						"description": "The environment variable that our process will have access to at runtime.",
+						"maxItems": 100
 					},
 					"roomsPerProcess": {
 						"$ref": "#/components/schemas/NumRoomsPerProcess"
@@ -204,10 +197,12 @@
 						"maxItems": 2
 					},
 					"defaultContainerPort": {
-						"$ref": "#/components/schemas/ContainerPort"
+						"$ref": "#/components/schemas/ContainerPort",
+						"description": "Describes the primary port your process listens on."
 					},
 					"transportType": {
-						"$ref": "#/components/schemas/TransportType",
+						"type": "string",
+						"enum": ["tcp", "udp", "tls"],
 						"deprecated": true
 					},
 					"containerPort": {
@@ -217,28 +212,34 @@
 					},
 					"createdAt": {
 						"type": "string",
-						"format": "date-time"
+						"format": "date-time",
+						"description": "When the deployment was created."
 					},
 					"createdBy": {
-						"$ref": "#/components/schemas/EmailAddress"
+						"type": "string",
+						"description": "Email address for the user that created the deployment.",
+						"example": "dev@hathora.dev"
 					},
 					"requestedMemoryMB": {
 						"type": "number",
 						"format": "double",
-						"description": "The amount of memory allocated to the container.",
+						"description": "The amount of memory allocated to your process.",
 						"example": 1024
 					},
 					"requestedCPU": {
 						"type": "number",
 						"format": "double",
-						"description": "The number of cores allocated to the container.",
+						"description": "The number of cores allocated to your process.",
 						"example": 0.5
 					},
 					"deploymentId": {
 						"$ref": "#/components/schemas/DeploymentId"
 					},
 					"buildId": {
-						"$ref": "#/components/schemas/BuildId"
+						"type": "integer",
+						"format": "int32",
+						"description": "System generated id for a build associated with this deployment. Increments by 1.",
+						"example": 1
 					},
 					"appId": {
 						"$ref": "#/components/schemas/AppId"
@@ -261,7 +262,7 @@
 					"appId"
 				],
 				"type": "object",
-				"description": "A deployment object represents a version of your application and it's metadata."
+				"description": "Deployment is a versioned configuration for a build that describes runtime behavior."
 			},
 			"ApplicationWithDeployment": {
 				"allOf": [
@@ -375,7 +376,7 @@
 			"LinkPaymentMethod": {
 				"properties": {
 					"email": {
-						"$ref": "#/components/schemas/EmailAddress"
+						"type": "string"
 					}
 				},
 				"type": "object"
@@ -448,6 +449,12 @@
 				"type": "object",
 				"description": "Billing types"
 			},
+			"BuildId": {
+				"type": "integer",
+				"format": "int32",
+				"example": 1,
+				"description": "System generated id for a build. Increments by 1."
+			},
 			"Region": {
 				"type": "string",
 				"enum": [
@@ -479,7 +486,8 @@
 							"required": ["containerTag", "region"],
 							"type": "object"
 						},
-						"type": "array"
+						"type": "array",
+						"description": "An alias for the container image in our regional registries."
 					},
 					"imageSize": {
 						"type": "number",
@@ -489,29 +497,35 @@
 					"status": {
 						"type": "string",
 						"enum": ["created", "running", "succeeded", "failed"],
-						"description": "Status of creating a build."
+						"description": "Status of creating a build.\n\n`created`: a new `buildId` was generated\n\n`running`: the container image is being built\n\n`succeeded`: the container image was successfully built and stored in our registry\n\n`failed`: there was an issue creating and storing the container image in our container registry"
 					},
 					"deletedAt": {
 						"type": "string",
 						"format": "date-time",
-						"nullable": true
+						"nullable": true,
+						"description": "When the container image was deleted."
 					},
 					"finishedAt": {
 						"type": "string",
 						"format": "date-time",
-						"nullable": true
+						"nullable": true,
+						"description": "When the container image finished being built."
 					},
 					"startedAt": {
 						"type": "string",
 						"format": "date-time",
-						"nullable": true
+						"nullable": true,
+						"description": "When the container image starts getting built."
 					},
 					"createdAt": {
 						"type": "string",
-						"format": "date-time"
+						"format": "date-time",
+						"description": "When a new `buildId` is generated."
 					},
 					"createdBy": {
-						"$ref": "#/components/schemas/EmailAddress"
+						"type": "string",
+						"description": "Email address for the user that created the build.",
+						"example": "dev@hathora.dev"
 					},
 					"buildId": {
 						"$ref": "#/components/schemas/BuildId"
@@ -533,7 +547,7 @@
 					"appId"
 				],
 				"type": "object",
-				"description": "A build object represents a game server's container image and it's metadata."
+				"description": "Build is a versioned artifact for a game server's container image and its data."
 			},
 			"DeploymentConfig": {
 				"properties": {
@@ -557,6 +571,7 @@
 							"type": "object"
 						},
 						"type": "array",
+						"description": "The environment variable that our process will have access to at runtime.",
 						"maxItems": 100
 					},
 					"roomsPerProcess": {
@@ -636,17 +651,21 @@
 				"properties": {
 					"state": {
 						"additionalProperties": false,
-						"type": "object"
+						"type": "object",
+						"description": "JSON blob to store metadata for a room. Must be smaller than 1MB."
 					},
 					"initialConfig": {
 						"$ref": "#/components/schemas/LobbyInitialConfig"
 					},
 					"createdAt": {
 						"type": "string",
-						"format": "date-time"
+						"format": "date-time",
+						"description": "When the lobby was created."
 					},
 					"createdBy": {
-						"$ref": "#/components/schemas/EmailAddress"
+						"type": "string",
+						"description": "Email address for the user that created the lobby.",
+						"example": "dev@hathora.dev"
 					},
 					"local": {
 						"type": "boolean"
@@ -866,21 +885,25 @@
 					"terminatedAt": {
 						"type": "string",
 						"format": "date-time",
-						"nullable": true
+						"nullable": true,
+						"description": "When the process has been terminated."
 					},
 					"stoppingAt": {
 						"type": "string",
 						"format": "date-time",
-						"nullable": true
+						"nullable": true,
+						"description": "When the process is issued to stop. We use this to determine when we should stop billing."
 					},
 					"startedAt": {
 						"type": "string",
 						"format": "date-time",
-						"nullable": true
+						"nullable": true,
+						"description": "When the process bound to the specified port. We use this to determine when we should start billing."
 					},
 					"startingAt": {
 						"type": "string",
-						"format": "date-time"
+						"format": "date-time",
+						"description": "When the process started being provisioned."
 					},
 					"roomsPerProcess": {
 						"$ref": "#/components/schemas/NumRoomsPerProcess"
@@ -947,7 +970,7 @@
 					"appId"
 				],
 				"type": "object",
-				"description": "A process object represents a runtime instance of your game server and it's metadata."
+				"description": "A process object represents a runtime instance of your game server and its metadata."
 			},
 			"RoomStatus": {
 				"type": "string",
@@ -1179,6 +1202,7 @@
 	"info": {
 		"title": "Hathora Cloud API",
 		"version": "0.0.1",
+		"description": "Welcome to the Hathora Cloud API documentation! Learn how to use the Hathora Cloud APIs to build and scale your game servers globally.",
 		"contact": {}
 	},
 	"openapi": "3.0.0",
@@ -1201,7 +1225,7 @@
 						}
 					}
 				},
-				"description": "Returns an unsorted list of [application](https://hathora.dev/docs/concepts/hathora-entities#application) objects based on the authentication that was used to make the request. An application is uniquely identified by an `appId`.",
+				"description": "Returns an unsorted list of your organization’s [applications](https://hathora.dev/docs/concepts/hathora-entities#application). An application is uniquely identified by an `appId`.",
 				"tags": ["AppV1"],
 				"security": [
 					{
@@ -1246,7 +1270,7 @@
 						}
 					}
 				},
-				"description": "Create an [application](https://hathora.dev/docs/concepts/hathora-entities#application) on Hathora. An `appName` must be unique within an organization.",
+				"description": "Create a new [application](https://hathora.dev/docs/concepts/hathora-entities#application).",
 				"tags": ["AppV1"],
 				"security": [
 					{
@@ -1301,7 +1325,7 @@
 						}
 					}
 				},
-				"description": "Updates `appName` and `authConfiguration` for an existing [application](https://hathora.dev/docs/concepts/hathora-entities#application) using `appId`.",
+				"description": "Update data for an existing [application](https://hathora.dev/docs/concepts/hathora-entities#application) using `appId`.",
 				"tags": ["AppV1"],
 				"security": [
 					{
@@ -1402,7 +1426,7 @@
 						}
 					}
 				},
-				"description": "Delete an [application](https://hathora.dev/docs/concepts/hathora-entities#application) using `appId`. All metadata for the application will be lost.",
+				"description": "Delete an [application](https://hathora.dev/docs/concepts/hathora-entities#application) using `appId`. Your organization will lose access to this application.",
 				"tags": ["AppV1"],
 				"security": [
 					{
@@ -3045,7 +3069,7 @@
 						}
 					}
 				},
-				"description": "Get all active [lobbies](https://hathora.dev/docs/concepts/hathora-entities#lobby) for a given [application](https://hathora.dev/docs/concepts/hathora-entities#application) using `appId`. Filter the array by optionally passing in a region.",
+				"description": "Get all active [lobbies](https://hathora.dev/docs/concepts/hathora-entities#lobby) for a given [application](https://hathora.dev/docs/concepts/hathora-entities#application) using `appId`. Filter the array by optionally passing in a `region`.",
 				"tags": ["LobbyV2"],
 				"security": [],
 				"parameters": [
@@ -3058,6 +3082,7 @@
 						}
 					},
 					{
+						"description": "Region to filter by. If omitted, active public lobbies in all regions will be returned.",
 						"in": "query",
 						"name": "region",
 						"required": false,
@@ -4573,6 +4598,48 @@
 		},
 		{
 			"url": "/"
+		}
+	],
+	"tags": [
+		{
+			"name": "AppV1",
+			"description": "Operations that allow you manage your [applications](https://hathora.dev/docs/concepts/hathora-entities#application)."
+		},
+		{
+			"name": "AuthV1",
+			"description": "Operations that allow you to configure authentication for your [applications](https://hathora.dev/docs/concepts/hathora-entities#application)."
+		},
+		{
+			"name": "BuildV1",
+			"description": "Operations that allow you create and manage your [build](https://hathora.dev/docs/concepts/hathora-entities#build)."
+		},
+		{
+			"name": "DeploymentV1",
+			"description": "Operations that allow you configure and manage an application's [build](https://hathora.dev/docs/concepts/hathora-entities#build) at runtime."
+		},
+		{
+			"name": "DiscoveryV1",
+			"description": "Service that allows clients to directly ping all Hathora regions to get latency information"
+		},
+		{
+			"name": "LobbyV2",
+			"description": "Operations to create and manage [lobbies](https://hathora.dev/docs/concepts/hathora-entities#lobby)."
+		},
+		{
+			"name": "LogV1",
+			"description": "Operations to get logs by [applications](https://hathora.dev/docs/concepts/hathora-entities#application), [processes](https://hathora.dev/docs/concepts/hathora-entities#process), and [deployments](https://hathora.dev/docs/concepts/hathora-entities#deployment). We store 20GB of logs data."
+		},
+		{
+			"name": "MetricsV1",
+			"description": "Operations to get metrics by [process](https://hathora.dev/docs/concepts/hathora-entities#process). We store 72 hours of metrics data."
+		},
+		{
+			"name": "ProcessesV1",
+			"description": "Operations to get data on active and stopped [processes](https://hathora.dev/docs/concepts/hathora-entities#process)."
+		},
+		{
+			"name": "RoomV2",
+			"description": "Operations to create, manage, and connect to [rooms](https://hathora.dev/docs/concepts/hathora-entities#room)."
 		}
 	]
 }
