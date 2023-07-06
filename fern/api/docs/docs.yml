@@ -2,5 +2,6 @@ navigation:
   - api: API Reference
 colors:
   accentPrimary: "#75f96f"
-
+title: Hathora | API Docs
+favicon: ./favicon.ico
 logo: ./logo.png
