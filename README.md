@@ -1,6 +1,6 @@
 # Hathora Cloud API
 
-Merging to main deploys the API Reference Docs to https://hathora.docs.buildwithfern.com
+Merging to main deploys the API Reference Docs to https://hathora.docs.buildwithfern.com/api-reference.
 
 ## What is in this repository?
 
