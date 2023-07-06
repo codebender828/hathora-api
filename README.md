@@ -1,9 +1,6 @@
 # Hathora Cloud API
 
-Tagging a release on this repository will update the:
-
-- [Node.js SDK repo](https://github.com/fern-hathora/hathora-node)
-- _More SDKs to come..._
+Merging to main deploys the API Reference Docs to https://hathora.docs.buildwithfern.com
 
 ## What is in this repository?
 
