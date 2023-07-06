@@ -2,14 +2,4 @@ groups:
   external:
     docs:
       domain: hathora.docs.buildwithfern.com
-    generators:
-      - name: fernapi/fern-typescript-sdk
-        version: 0.5.23
-        output:
-          location: npm
-          package-name: "@fern-api/hathora"
-          token: ${FERN_NPM_TOKEN}
-        github:
-          repository: fern-hathora/hathora-node
-        config:
-          namespaceExport: Hathora
+    generators: []
