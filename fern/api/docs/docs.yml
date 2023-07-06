@@ -4,4 +4,6 @@ colors:
   accentPrimary: "#75f96f"
 title: Hathora | API Docs
 favicon: ./favicon.ico
-logo: ./logo.png
+logo:
+  path: ./logo.png
+  href: https://hathora.dev
