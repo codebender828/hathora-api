@@ -7,3 +7,4 @@ favicon: ./favicon.ico
 logo:
   path: ./logo.png
   href: https://hathora.dev
+background-image: ./hathora-bg-1.png
