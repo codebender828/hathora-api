@@ -7,4 +7,11 @@ favicon: ./favicon.ico
 logo:
   path: ./logo.png
   href: https://hathora.dev
+ 
+typography:
+  headingsFont:
+    path: ./fonts/SpaceGrotesk-Bold.woff2
+  bodyFont:
+    path: ./fonts/SpaceGrotesk-Regular.woff2
+
 background-image: ./hathora-bg-1.png
